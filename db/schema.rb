@@ -10,7 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_06_13_082250) do
+ActiveRecord::Schema[8.1].define(version: 2026_06_13_084212) do
+  create_table "osrspolls", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "question"
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "poll_options", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "osrspoll_id", null: false
+    t.string "title"
+    t.datetime "updated_at", null: false
+    t.index ["osrspoll_id"], name: "index_poll_options_on_osrspoll_id"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -22,4 +36,17 @@ ActiveRecord::Schema[8.1].define(version: 2026_06_13_082250) do
     t.datetime "updated_at", null: false
     t.string "username"
   end
+
+  create_table "votes", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.integer "poll_option_id", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["poll_option_id"], name: "index_votes_on_poll_option_id"
+    t.index ["user_id"], name: "index_votes_on_user_id"
+  end
+
+  add_foreign_key "poll_options", "osrspolls"
+  add_foreign_key "votes", "poll_options"
+  add_foreign_key "votes", "users"
 end

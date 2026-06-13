@@ -1,0 +1,20 @@
+<%= @poll.question %>
+<p>Vote</p>
+<% @poll.poll_options.each do |option| %>
+    <%= option.title %>
+    <%= button_to "Vote",
+    osrspoll_votes_path(@poll, poll_option_id: option.id),
+    method: :post %>
+    <% end %>
+<hr>
+<p>Results</p>
+<% total = @poll.votes.count.to_f %>
+
+<% @poll.poll_options.each do |option| %>
+    <% count = option.votes.count %>
+    <% percent = total.zero? ? 0 : (count / total * 100).round(1) %>
+
+    <p>
+    <%= option.title %> - <%= percent %>% (<%= count %>)
+    </p>
+<% end %>

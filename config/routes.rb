@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :osrspolls do
+    resources :votes, only: [:create]
+  end
   get "dashboard" => "dashboard#home"
   controller :sessions do
     get "login" => :new
